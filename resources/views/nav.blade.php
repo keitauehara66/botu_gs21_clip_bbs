@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand navbar-dark" style="background-color:#26b297;">
+<nav class="navbar navbar-expand navbar-dark fixed-top" style="background-color:#26b297;">
 
   <a class="navbar-brand" href="/"><i class="far fa-sticky-note mr-1"></i>Clip BBS</a>
 

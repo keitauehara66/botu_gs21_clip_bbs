@@ -34,4 +34,9 @@ class Thread extends Model
     {
         return $this->bookmarks->count();
     }
+    
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Tag', 'thread_tag')->withTimestamps();
+    }
 }

@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <div id="app">
+  <div id="app" class="pt-5">
     @yield('content')
   </div>
 

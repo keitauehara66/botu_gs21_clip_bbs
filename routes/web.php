@@ -21,3 +21,4 @@ Route::prefix('threads')->name('threads.')->group(function () {
     Route::put('/{thread}/bookmark', 'ThreadController@bookmark')->name('bookmark')->middleware('auth');
     Route::delete('/{thread}/bookmark', 'ThreadController@unbookmark')->name('unbookmark')->middleware('auth');
 });
+Route::get('/tags/{tagname}', 'TagController@show')->name('tags.show');
