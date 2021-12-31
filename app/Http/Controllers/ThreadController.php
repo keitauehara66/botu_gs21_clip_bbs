@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Thread;
 use App\Tag;
+use App\Comment;
 use App\Http\Requests\ThreadRequest;
 
 class ThreadController extends Controller
@@ -84,9 +85,12 @@ class ThreadController extends Controller
         return redirect()->route('threads.index');
     }
 
-    public function show(Thread $thread)
+    public function show(Thread $thread, Comment $comment)
     {
-        return view('threads.show', ['thread' => $thread]);
+        return view('threads.show', [
+            'thread' => $thread,
+            'comment' => $comment,
+        ]);
     }
     
     public function bookmark(Request $request, Thread $thread)

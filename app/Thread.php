@@ -29,6 +29,10 @@ class Thread extends Model
             ? (bool)$this->bookmarks->where('id', $user->id)->count()
             : false;
     }
+
+    public function comments(){
+        return $this->hasMany('\App\Comment', 'thread_id', 'id');
+    }
     
     public function getCountBookmarksAttribute(): int
     {
