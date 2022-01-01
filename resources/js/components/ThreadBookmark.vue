@@ -2,9 +2,9 @@
   <div>
     <button
       type="button"
-      class="btn m-0 p-1 shadow-none"
+      class="btn m-0 p-0 shadow-none"
     >
-      <i class="fas fa-star fa-2x mr-1"
+      <i class="fas fa-star fa-lg mr-1"
         :class="{'yellow-text':this.isBookmarkedBy, 'animated heartBeat fast':this.gotToBookmark}"
         @click="clickBookmark" 
       />

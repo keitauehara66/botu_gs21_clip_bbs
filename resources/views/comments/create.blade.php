@@ -21,7 +21,16 @@
                 @csrf
                 <div class="form-group">
                   <label></label>
-                  <textarea name="comment" required class="form-control" rows="10" placeholder="コメント本文">{{ $comment->comment ?? old('comment') }}</textarea>
+                  <textarea name="comment" required class="form-control" rows="16" placeholder="コメント本文">{{ $comment->comment ?? old('comment') }}</textarea>
+                  
+                  <div class="form-group pt-3">
+                    <label for="inputFile">動画・写真を添付しますか？（任意）</label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="inputFile" name="image" accept="image/*, video/*">
+                      <label class="custom-file-label" for="inputFile" data-browse="参照"><font color="#808080">ファイル選択または撮影</font></label>
+                    </div>
+                  </div>
+                  
                   <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                   <input type="hidden" name="thread_id" value="{{ $thread_id }}">
                 </div>

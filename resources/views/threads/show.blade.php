@@ -3,18 +3,18 @@
 @section('title', 'スレッド詳細')
 
 @section('content')
-  @include('nav')
+  @include('nav-comment')
   <div class="container">
 
     <div class="card mt-3">
       <div class="card-header d-flex flex-row align-items-center py-2">
-        <h5 class="card-title m-0">
+        <h6 class="card-title flex-grow-1 m-0">
           <a class="text-dark" href="{{ route('threads.show', ['thread' => $thread]) }}">
             {{ $thread->title }}
           </a>
-        </h5>
+        </h6>
 
-        <div class="ml-auto card-text">
+        <div class="ml-auto card-text p-0">
           <thread-bookmark
             :initial-is-bookmarked-by='@json($thread->isBookmarkedBy(Auth::user()))'
             :initial-count-bookmarks='@json($thread->count_bookmarks)'
@@ -23,6 +23,13 @@
           >
           </thread-bookmark>
         </div>
+      </div>
+
+      <div class="card-body d-flex flex-row pt-1 pb-1 my-0 align-items-end">
+        <h6 class="font-weight-bold my-0"><font size="1">作成者：</font></h6>
+        <i class="fas fa-user-circle"></i>
+        <h6 class="font-weight-bold ml-2 my-0"><font size="1">{{ $thread->user->name }}</font></h6>
+        <h6 class="font-weight-lighter ml-2 my-0"><font size="1">{{ $thread->created_at->format('Y/m/d H:i') }}</font></h6>
       </div>
 
       @foreach($thread->tags as $tag)
@@ -39,16 +46,10 @@
         @endif
       @endforeach
       
-      <div class="card-body pt-2 pb-1">
+      <div class="card-body pt-2 pb-2">
         <div class="card-text">
           {{ $thread->body }}
         </div>
-      </div>
-    
-      <div class="card-body d-flex flex-row pt-1 pb-3 my-0 align-items-end">
-        <i class="fas fa-user-circle"></i>
-        <h6 class="font-weight-bold ml-2 my-0"><font size="1">{{ $thread->user->name }}</font></h6>
-        <h6 class="font-weight-lighter ml-2 my-0"><font size="1">{{ $thread->created_at->format('Y/m/d H:i') }}</font></h6>
       </div>
       
       <div class="p-3">
@@ -56,15 +57,15 @@
 
         @foreach($thread->comments as $comment)
           <div class="card m-1">
-            <div class="card-header d-flex flex-row align-items-center py-2">
+            <div class="card-header d-flex flex-row align-items-center py-2 pl-3">
               <h6 class="card-title m-0">
                   <i class="fas fa-user-circle"></i>
                   <h6 class="font-weight-bold ml-2 my-0"><font size="2">{{ $comment->user->name }}</font></h6>
-                  <h6 class="font-weight-lighter ml-2 my-0"><font size="2">{{ $comment->created_at->format('Y/m/d H:i') }}</font></h6>
+                  <h6 class="font-weight-lighter ml-2 my-0"><font size="1">{{ $comment->created_at->format('Y/m/d H:i') }}</font></h6>
               </h6>
               
-              <div class="card-body py-0 pl-3">
-                <div class="card-text">
+              <div class="card-body py-0 pr-3">
+                <div class="card-text text-right">
                   <comment-like
                     :initial-is-liked-by='@json($comment->isLikedBy(Auth::user()))'
                     :initial-count-likes='@json($comment->count_likes)'
@@ -124,6 +125,11 @@
               <div class="card-text">
                 {{ $comment->comment }}
               </div>
+              @if(isset($comment->image))
+              <div class="p-0">
+                <iframe width="265" src="{{ asset('storage/image/'.$comment->image) }}" frameborder="0" allowfullscreen></iframe>
+              </div>
+              @endif
             </div>
           </div>
         @endforeach

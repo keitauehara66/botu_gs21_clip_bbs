@@ -43,4 +43,9 @@ class Thread extends Model
     {
         return $this->belongsToMany('App\Tag', 'thread_tag')->withTimestamps();
     }
+    
+    public function getCountCommentsAttribute(): int
+    {
+        return $this->comments->count();
+    }
 }

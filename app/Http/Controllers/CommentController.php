@@ -31,13 +31,30 @@ class CommentController extends Controller
 
     public function store(CommentRequest $request, Comment $comment)
     {
-        $comment->fill($request->all());
-        // allメソッドを使うことでPOSTリクエストのパラメータを配列で取得し、
-        // モデルファイル（Comment.php）のfillableプロパティで指定したパラメータのみが$commentに代入される
-        $comment->user_id = $request->user_id;
-        $comment->thread_id = $request->thread_id;
-        $comment->save();
+        if(is_null($request->image)){
+            $comment->fill($request->all());
+            // allメソッドを使うことでPOSTリクエストのパラメータを配列で取得し、
+            // モデルファイル（Comment.php）のfillableプロパティで指定したパラメータのみが$commentに代入される
+            $comment->user_id = $request->user_id;
+            $comment->thread_id = $request->thread_id;
+            $comment->save();
 
+        }elseif($request->file('image')->isValid()){
+            $comment->fill($request->all());
+            // allメソッドを使うことでPOSTリクエストのパラメータを配列で取得し、
+            // モデルファイル（Comment.php）のfillableプロパティで指定したパラメータのみが$commentに代入される
+            $comment->user_id = $request->user_id;
+            $comment->thread_id = $request->thread_id;
+
+            $filename = $request->file('image')->store('public/image');
+            $file = $request->file('image');
+            //アスペクト比を維持、画像サイズを横幅360pxにして保存する。
+            // InterventionImage::make($file)->resize(360, null, function ($constraint) {$constraint->aspectRatio();})->save(storage_path('app/'.$filename));
+
+            $comment->image = basename($filename);
+            $comment->save();
+        }
+        
         return redirect('/threads/'.$comment->thread_id);
     }
 

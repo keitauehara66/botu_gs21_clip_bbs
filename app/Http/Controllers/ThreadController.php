@@ -17,9 +17,13 @@ class ThreadController extends Controller
     
     public function index()
     {
-        $threads = Thread::all()->sortByDesc('created_at');
+        $q = \Request::query();
+        $threads = Thread::latest()->paginate(20);
+        $threads->load('user');        
  
-        return view('threads.index', ['threads' => $threads]);
+        return view('threads.index', [
+            'threads' => $threads,
+        ]);
     }
 
     public function create()
@@ -112,5 +116,20 @@ class ThreadController extends Controller
             'id' => $thread->id,
             'countBookmarks' => $thread->count_bookmarks,
         ];
+    }
+    
+    public function search(Request $request)
+    {
+        $threads = Thread::where('title', 'like', "%{$request->search}%")
+                    ->orwhere('body', 'like', "%{$request->search}%")
+                    ->paginate(20);
+
+        $search_result = $request->search.'　の検索結果'.$threads->total().'件';
+
+        return view('threads.index', [
+            'threads' => $threads,
+            'search_result' => $search_result,
+            'search_query' => $request->search,
+        ]);
     }
 }

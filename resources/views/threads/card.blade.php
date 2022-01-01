@@ -1,10 +1,20 @@
 <div class="card mt-3">
   <div class="card-header d-flex flex-row align-items-center py-2">
-    <h6 class="card-title m-0">
+    <h6 class="card-title flex-grow-1 m-0">
       <a class="text-dark" href="{{ route('threads.show', ['thread' => $thread]) }}">
         {{ $thread->title }}
       </a>
     </h6>
+    
+    <div class="ml-auto card-text pr-4">
+      <thread-bookmark
+        :initial-is-bookmarked-by='@json($thread->isBookmarkedBy(Auth::user()))'
+        :initial-count-bookmarks='@json($thread->count_bookmarks)'
+        :authorized='@json(Auth::check())'
+        endpoint="{{ route('threads.bookmark', ['thread' => $thread]) }}"
+      >
+      </thread-bookmark>
+    </div>
     
     @if( Auth::id() === $thread->user_id )
       <!-- dropdown -->
@@ -52,16 +62,10 @@
     @endif
   </div>
 
-  <div class="card-body py-2">
+  <div class="card-body pt-2 pb-1">
     <div class="card-text text-truncate">
       {{ $thread->body }}
     </div>
-  </div>
-
-  <div class="card-body d-flex flex-row py-1 my-0 align-items-end">
-    <i class="fas fa-user-circle"></i>
-    <h6 class="font-weight-bold ml-2 my-0"><font size="1">{{ $thread->user->name }}</font></h6>
-    <h6 class="font-weight-lighter ml-2 my-0"><font size="1">{{ $thread->created_at->format('Y/m/d H:i') }}</font></h6>
   </div>
 
   @foreach($thread->tags as $tag)
@@ -78,16 +82,18 @@
     @endif
   @endforeach
   
-  <div class="card-body pt-0 py-2 pl-3">
-    <div class="card-text">
-      <thread-bookmark
-        :initial-is-bookmarked-by='@json($thread->isBookmarkedBy(Auth::user()))'
-        :initial-count-bookmarks='@json($thread->count_bookmarks)'
-        :authorized='@json(Auth::check())'
-        endpoint="{{ route('threads.bookmark', ['thread' => $thread]) }}"
-      >
-      </thread-bookmark>
-    </div>
+  <div class="card-body d-flex flex-row py-1 my-0 align-items-end">
+    <h6 class="font-weight-bold my-0"><font size="1">作成者：</font></h6>
+    <i class="fas fa-user-circle"></i>
+    <a href="{{ route('users.show', ['name' => $thread->user->name]) }}" class="text-dark">
+      <h6 class="font-weight-bold ml-2 my-0"><font size="1">{{ $thread->user->name }}</font></h6>
+    </a>
+    <h6 class="font-weight-lighter ml-2 my-0"><font size="1">{{ $thread->created_at->format('Y/m/d H:i') }}</font></h6>
+  </div>
+
+  <div class="card-body py-1">
+    <i class="fas fa-comment-dots mr-1"></i>
+    <font size="2">{{ $thread->countcomments }}</font>
   </div>
 
 </div>
