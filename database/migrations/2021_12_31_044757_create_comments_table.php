@@ -21,6 +21,7 @@ class CreateCommentsTable extends Migration
             $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
             $table->string('comment')->nullable();
             $table->string('image')->nullable();
+            $table->string('video')->nullable();
             $table->timestamps();
         });
     }

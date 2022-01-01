@@ -26,6 +26,7 @@ class CommentRequest extends FormRequest
         return [
             'comment' => 'required|max:500',
             'image' => 'nullable|file',
+            'video' => 'nullable|file',
             'user_id' => 'required|numeric',
             'thread_id' => 'required|numeric',
         ];
@@ -35,7 +36,8 @@ class CommentRequest extends FormRequest
     {
         return [
             'comment' => 'コメント',
-            'image' => 'ファイル',
+            'image' => '写真',
+            'video' => '動画',
             'user_id' => 'ユーザーID',
             'thread_id' => 'スレッドID',
         ];

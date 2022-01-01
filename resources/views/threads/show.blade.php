@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'スレッド詳細')
+@section('title', '掲示板詳細')
 
 @section('content')
   @include('nav-comment')
@@ -53,7 +53,7 @@
       </div>
       
       <div class="p-3">
-        <h6 class="card-title">コメント一覧</h6>
+        <h6 class="card-title">投稿一覧</h6>
 
         @foreach($thread->comments as $comment)
           <div class="card m-1">
@@ -85,11 +85,11 @@
                       </a>
                       <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="{{ route("comments.edit", ['comment' => $comment]) }}">
-                          <i class="fas fa-pen mr-1"></i>コメントを更新する
+                          <i class="fas fa-pen mr-1"></i>投稿を更新する
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" data-toggle="modal" data-target="#modal-delete-{{ $comment->id }}">
-                          <i class="fas fa-trash-alt mr-1"></i>コメントを削除する
+                          <i class="fas fa-trash-alt mr-1"></i>投稿を削除する
                         </a>
                       </div>
                     </div>
@@ -108,7 +108,7 @@
                           @csrf
                           @method('DELETE')
                           <div class="modal-body">
-                            コメントを削除します。よろしいですか？
+                            投稿を削除します。よろしいですか？
                           </div>
                           <div class="modal-footer justify-content-between">
                             <a class="btn btn-outline-grey" data-dismiss="modal">キャンセル</a>
@@ -127,7 +127,12 @@
               </div>
               @if(isset($comment->image))
               <div class="p-0">
-                <iframe width="265" src="{{ asset('storage/image/'.$comment->image) }}" frameborder="0" allowfullscreen></iframe>
+                <img width="265" src="{{ asset('storage/image/'.$comment->image) }}" frameborder="0" allowfullscreen></img>
+              </div>
+              @endif
+              @if(isset($comment->video))
+              <div class="p-0">
+                <iframe width="265" src="{{ asset('storage/video/'.$comment->video) }}" frameborder="0" allowfullscreen></iframe>
               </div>
               @endif
             </div>

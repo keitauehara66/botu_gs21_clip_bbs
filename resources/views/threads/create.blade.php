@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'スレッド作成')
+@section('title', '掲示板作成')
 
 @include('nav')
 
@@ -14,7 +14,7 @@
             <div class="card-text">
               <form method="POST" action="{{ route('threads.store') }}">
                 @include('threads.form')
-                <button type="submit" class="btn btn-block" style="background-color:#26b297; color:#ffffff;">スレッド作成</button>
+                <button type="submit" class="btn btn-block" style="background-color:#26b297; color:#ffffff;">掲示板を作成する</button>
               </form>
             </div>
           </div>

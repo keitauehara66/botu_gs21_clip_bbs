@@ -32,27 +32,47 @@ class CommentController extends Controller
     public function store(CommentRequest $request, Comment $comment)
     {
         if(is_null($request->image)){
-            $comment->fill($request->all());
-            // allメソッドを使うことでPOSTリクエストのパラメータを配列で取得し、
-            // モデルファイル（Comment.php）のfillableプロパティで指定したパラメータのみが$commentに代入される
-            $comment->user_id = $request->user_id;
-            $comment->thread_id = $request->thread_id;
-            $comment->save();
+            if(is_null($request->video)){
+                $comment->fill($request->all());
+                // allメソッドを使うことでPOSTリクエストのパラメータを配列で取得し、
+                // モデルファイル（Comment.php）のfillableプロパティで指定したパラメータのみが$commentに代入される
+                $comment->user_id = $request->user_id;
+                $comment->thread_id = $request->thread_id;
+                $comment->save();
+            }elseif($request->file('video')->isValid()){
+                $comment->fill($request->all());
+                $comment->user_id = $request->user_id;
+                $comment->thread_id = $request->thread_id;
 
+                $videofilename = $request->file('video')->store('public/video');
+                $videofile = $request->file('video');
+                $comment->video = basename($videofilename);
+                $comment->save();
+            }
         }elseif($request->file('image')->isValid()){
-            $comment->fill($request->all());
-            // allメソッドを使うことでPOSTリクエストのパラメータを配列で取得し、
-            // モデルファイル（Comment.php）のfillableプロパティで指定したパラメータのみが$commentに代入される
-            $comment->user_id = $request->user_id;
-            $comment->thread_id = $request->thread_id;
+            if(is_null($request->video)){
+                $comment->fill($request->all());
+                $comment->user_id = $request->user_id;
+                $comment->thread_id = $request->thread_id;
 
-            $filename = $request->file('image')->store('public/image');
-            $file = $request->file('image');
-            //アスペクト比を維持、画像サイズを横幅360pxにして保存する。
-            // InterventionImage::make($file)->resize(360, null, function ($constraint) {$constraint->aspectRatio();})->save(storage_path('app/'.$filename));
+                $imagefilename = $request->file('image')->store('public/image');
+                $imagefile = $request->file('image');
+                $comment->image = basename($imagefilename);
+                $comment->save();
+            }elseif($request->file('video')->isValid()){
+                $comment->fill($request->all());
+                $comment->user_id = $request->user_id;
+                $comment->thread_id = $request->thread_id;
 
-            $comment->image = basename($filename);
-            $comment->save();
+                $imagefilename = $request->file('image')->store('public/image');
+                $imagefile = $request->file('image');
+                $comment->image = basename($imagefilename);
+
+                $videofilename = $request->file('video')->store('public/video');
+                $videofile = $request->file('video');
+                $comment->video = basename($videofilename);
+                $comment->save();
+            }
         }
         
         return redirect('/threads/'.$comment->thread_id);

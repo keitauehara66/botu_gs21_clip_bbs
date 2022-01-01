@@ -18,7 +18,7 @@
       
     @auth
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('comments.create', ['thread_id' => $thread->id]) }}"><i class="fas fa-comment-dots mr-1"></i>コメント作成</a>
+      <a class="nav-link" href="{{ route('comments.create', ['thread_id' => $thread->id]) }}"><i class="fas fa-comment-dots mr-1"></i>投稿作成</a>
     </li>
     @endauth
     
